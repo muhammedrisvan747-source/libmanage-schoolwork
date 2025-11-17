@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System - Admin Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="loading-screen active">
+            <div class="loader-container">
+                <div class="loader"></div>
+                <h1 class="loader-title">Library</h1>
+                <p class="loader-subtitle">Management System</p>
+            </div>
+        </div>
+
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen">
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="login-header">
+                        <h1>Library Admin</h1>
+                        <p>Sign in to your account</p>
+                    </div>
+                    <form id="login-form" class="login-form">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="admin@library.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-large">Sign In</button>
+                    </form>
+                    <p class="login-footer">Demo: Use any email/password</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Container -->
+        <div id="app-container" class="app-container hidden">
+            <!-- Sidebar Navigation (Desktop) -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; color: var(--color-accent-gold); font-size: var(--font-size-body);">Library</h3>
+                        <p style="margin: 0; color: var(--color-neutral-muted); font-size: var(--font-size-label);">Admin Portal</p>
+                    </div>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#dashboard" class="nav-item active" data-page="dashboard">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#books" class="nav-item" data-page="books">
+                        <i class="fas fa-book-open"></i>
+                        <span>Books</span>
+                    </a>
+                    <a href="#members" class="nav-item" data-page="members">
+                        <i class="fas fa-users"></i>
+                        <span>Members</span>
+                    </a>
+                    <a href="#transactions" class="nav-item" data-page="transactions">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transactions</span>
+                    </a>
+                    <a href="#settings" class="nav-item" data-page="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#analytics" class="nav-item" data-page="analytics">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="#member-insights" class="nav-item" data-page="member-insights">
+                        <i class="fas fa-user-chart"></i>
+                        <span>Insights</span>
+                    </a>
+                </nav>
+                <div class="sidebar-footer">
+                    <button id="logout-btn" class="btn btn-ghost">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Mobile Bottom Navigation -->
+            <nav class="bottom-nav mobile-only">
+                <a href="#dashboard" class="bottom-nav-item active" data-page="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#books" class="bottom-nav-item" data-page="books">
+                    <i class="fas fa-book-open"></i>
+                    <span>Books</span>
+                </a>
+                <a href="#members" class="bottom-nav-item" data-page="members">
+                    <i class="fas fa-users"></i>
+                    <span>Members</span>
+                </a>
+                <a href="#transactions" class="bottom-nav-item" data-page="transactions">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="#settings" class="bottom-nav-item" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard Page -->
+                <div id="dashboard" class="page active">
+                    <div class="page-header">
+                        <h1>Dashboard</h1>
+                        <p>Welcome back, Admin</p>
+                    </div>
+
+                    <!-- Hero Card -->
+                    <div class="hero-card"></div>
+
+                    <!-- Overview Cards -->
+                    <div class="cards-grid"></div>
+
+                    <!-- Recent Transactions -->
+                    <section class="dashboard-section">
+                        <div class="section-header">
+                            <h2>Recent Transactions</h2>
+                            <a href="#transactions" class="link">View All</a>
+                        </div>
+                        <div class="transaction-list"></div>
+                    </section>
+                </div>
+
+                <!-- Books Page -->
+                <div id="books" class="page">
+                    <div class="page-header">
+                        <h1>Books Catalog</h1>
+                        <p>Manage your library collection</p>
+                    </div>
+
+                    <div class="books-toolbar">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-books" placeholder="Search books...">
+                        </div>
+                        <div class="toolbar-actions">
+                            <select id="sort-books" class="select">
+                                <option value="newest">Newest</option>
+                                <option value="popular">Most Popular</option>
+                                <option value="title">Title (A-Z)</option>
+                                <option value="rating">Highest Rated</option>
+                            </select>
+                            <button class="btn btn-primary btn-icon" id="add-book-btn">
+                                <i class="fas fa-plus"></i>
+                                <span class="desktop-only">Add Book</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Books Grid -->
+                    <div class="books-grid" id="books-grid"></div>
+                </div>
+
+                <!-- Book Detail Page -->
+                <div id="book-detail" class="page">
+                    <button class="btn btn-ghost back-btn" id="back-from-detail">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <div class="book-detail-container" id="book-detail-content"></div>
+                </div>
+
+                <!-- Members Page -->
+                <div id="members" class="page">
+                    <div class="page-header">
+                        <h1>Members</h1>
+                        <p>Manage library members</p>
+                    </div>
+
+                    <div class="members-toolbar">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-members" placeholder="Search members...">
+                        </div>
+                        <button class="btn btn-primary btn-icon">
+                            <i class="fas fa-user-plus"></i>
+                            <span class="desktop-only">Add Member</span>
+                        </button>
+                    </div>
+
+                    <div class="members-table-container">
+                        <table class="members-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Member Name</th>
+                                    <th>Email</th>
+                                    <th class="desktop-only">Joined</th>
+                                    <th>Loans</th>
+                                    <th class="desktop-only">Fines</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="members-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Member Detail Panel -->
+                <div id="member-detail" class="side-panel">
+                    <div class="panel-header">
+                        <button class="btn btn-icon" id="close-member-panel">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="panel-content" id="member-detail-content"></div>
+                </div>
+
+                <!-- Transactions Page -->
+                <div id="transactions" class="page">
+                    <div class="page-header">
+                        <h1>Transactions</h1>
+                        <p>Track all book borrowing and returns</p>
+                    </div>
+
+                    <div class="transactions-toolbar">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-transactions" placeholder="Search transactions...">
+                        </div>
+                        <div class="toolbar-actions">
+                            <select id="filter-status" class="select">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="returned">Returned</option>
+                                <option value="overdue">Overdue</option>
+                            </select>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-download"></i>
+                                <span class="desktop-only">Export</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="transactions-table-container">
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Book</th>
+                                    <th class="desktop-only">Member</th>
+                                    <th>Borrowed</th>
+                                    <th class="desktop-only">Due Date</th>
+                                    <th class="desktop-only">Returned</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactions-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div id="settings" class="page">
+                    <div class="page-header">
+                        <h1>Settings</h1>
+                        <p>Configure your library</p>
+                    </div>
+
+                    <div class="settings-grid">
+                        <!-- Library Info -->
+                        <section class="settings-section">
+                            <h2>Library Information</h2>
+                            <div class="form-group">
+                                <label for="library-name">Library Name</label>
+                                <input type="text" id="library-name" class="input">
+                            </div>
+                            <div class="form-group">
+                                <label for="library-location">Location</label>
+                                <input type="text" id="library-location" class="input">
+                            </div>
+                            <div class="form-group">
+                                <label for="library-email">Email</label>
+                                <input type="email" id="library-email" class="input">
+                            </div>
+                        </section>
+
+                        <!-- Preferences -->
+                        <section class="settings-section">
+                            <h2>Preferences</h2>
+                            <div class="settings-toggle">
+                                <label>
+                                    <input type="checkbox" id="theme-toggle" checked>
+                                    <span>Dark Mode</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="loan-period">Loan Period (days)</label>
+                                <input type="number" id="loan-period" class="input" value="14">
+                            </div>
+                            <div class="form-group">
+                                <label for="fine-amount">Fine per day (£)</label>
+                                <input type="number" id="fine-amount" class="input" value="0.50" step="0.01">
+                            </div>
+                        </section>
+
+                        <!-- Roles & Permissions -->
+                        <section class="settings-section">
+                            <h2>Roles & Permissions</h2>
+                            <div class="role-item">
+                                <h3>Admin</h3>
+                                <p>Full access to all features</p>
+                            </div>
+                            <div class="role-item">
+                                <h3>Librarian</h3>
+                                <p>Can manage books and members</p>
+                            </div>
+                            <div class="role-item">
+                                <h3>Staff</h3>
+                                <p>View-only access</p>
+                            </div>
+                        </section>
+
+                        <!-- Data Management -->
+                        <section class="settings-section">
+                            <h2>Data Management</h2>
+                            <div class="form-group">
+                                <button class="btn btn-secondary">
+                                    <i class="fas fa-download"></i> Export Data
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-secondary">
+                                    <i class="fas fa-upload"></i> Import Data
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="settings-footer">
+                        <button class="btn btn-primary">Save Changes</button>
+                    </div>
+                </div>
+
+                <!-- Analytics Page -->
+                <div id="analytics" class="page">
+                    <div class="page-header">
+                        <h1>Analytics & Insights</h1>
+                        <p>Library performance and circulation trends</p>
+                    </div>
+
+                    <div class="analytics-grid">
+                        <!-- Most Borrowed Books -->
+                        <section class="analytics-card">
+                            <h3>Most Borrowed Books</h3>
+                            <div id="most-borrowed-chart" class="chart-container"></div>
+                        </section>
+
+                        <!-- Monthly Circulation -->
+                        <section class="analytics-card">
+                            <h3>Monthly Circulation</h3>
+                            <div id="circulation-chart" class="chart-container"></div>
+                        </section>
+
+                        <!-- Overdue Trends -->
+                        <section class="analytics-card">
+                            <h3>Overdue Trends</h3>
+                            <div id="overdue-chart" class="chart-container"></div>
+                        </section>
+
+                        <!-- Member Growth -->
+                        <section class="analytics-card">
+                            <h3>Member Growth</h3>
+                            <div id="growth-chart" class="chart-container"></div>
+                        </section>
+
+                        <!-- Borrow Frequency Heatmap -->
+                        <section class="analytics-card full-width">
+                            <h3>Borrow Frequency by Genre</h3>
+                            <div id="genre-heatmap" class="heatmap-container"></div>
+                        </section>
+
+                        <!-- Top Genres -->
+                        <section class="analytics-card full-width">
+                            <h3>Top Genres</h3>
+                            <div id="genre-chart" class="chart-container"></div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Member Insights Page -->
+                <div id="member-insights" class="page">
+                    <div class="page-header">
+                        <h1>Member Insights</h1>
+                        <p>Detailed member activity and behavior analysis</p>
+                    </div>
+
+                    <div class="insights-toolbar">
+                        <select id="member-select" class="select">
+                            <option value="">Select a member...</option>
+                        </select>
+                    </div>
+
+                    <div id="member-insights-content" class="insights-content"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Notification Center -->
+    <div id="notification-center" class="notification-center">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="btn btn-icon" id="close-notifications">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="notifications-list" class="notifications-list"></div>
+    </div>
+
+    <!-- Notification Bell (Fixed) -->
+    <button id="notification-bell" class="notification-bell" title="View notifications">
+        <i class="fas fa-bell"></i>
+        <span id="notification-count" class="notification-badge">0</span>
+    </button>
+        <!-- Modals -->
+    <!-- Smart Search Modal -->
+    <div id="smart-search-modal" class="modal">
+        <div class="modal-content search-modal">
+            <div class="search-modal-input">
+                <i class="fas fa-search"></i>
+                <input type="text" id="smart-search-input" placeholder="Search books, authors, members, genres...">
+                <button class="btn btn-icon" data-close-modal>
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+    </div>
+
+    <div id="add-book-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Book</h2>
+                <button class="btn btn-icon" data-close-modal>
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="add-book-form" class="form">
+                <div class="form-group">
+                    <label for="book-title">Title</label>
+                    <input type="text" id="book-title" placeholder="Book title" required>
+                </div>
+                <div class="form-group">
+                    <label for="book-author">Author</label>
+                    <input type="text" id="book-author" placeholder="Author name" required>
+                </div>
+                <div class="form-group">
+                    <label for="book-isbn">ISBN</label>
+                    <input type="text" id="book-isbn" placeholder="ISBN number" required>
+                </div>
+                <div class="form-group">
+                    <label for="book-category">Category</label>
+                    <select id="book-category" required>
+                        <option value="">Select category</option>
+                        <option value="fiction">Fiction</option>
+                        <option value="non-fiction">Non-fiction</option>
+                        <option value="biography">Biography</option>
+                        <option value="history">History</option>
+                        <option value="science">Science</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="book-copies">Number of Copies</label>
+                    <input type="number" id="book-copies" min="1" value="1" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Book</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

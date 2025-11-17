@@ -1,0 +1,422 @@
+/* DEVELOPER SNIPPETS - Copy & Paste Ready */
+
+/* ==================== COMMON PATTERNS ==================== */
+
+/* Pattern 1: Add a New Stat Card to Dashboard */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-xl);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(195, 156, 107, 0.1);
+  border-radius: var(--radius-lg);
+}
+
+.stat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.stat-icon.custom-icon {
+  background: rgba(195, 156, 107, 0.15);
+  color: var(--color-accent-gold);
+}
+
+/* Pattern 2: Create a Custom Page Section */
+.custom-section {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(195, 156, 107, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.custom-section h2 {
+  color: var(--color-accent-gold);
+  margin-bottom: var(--spacing-lg);
+  font-size: var(--font-size-h2);
+}
+
+/* Pattern 3: Styled Table Row Highlight */
+tbody tr:hover {
+  background: rgba(195, 156, 107, 0.05);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+tbody tr.highlighted {
+  background: rgba(195, 156, 107, 0.15);
+  border-left: 4px solid var(--color-accent-gold);
+}
+
+/* Pattern 4: Custom Chip Status */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+.chip-pending {
+  background: rgba(216, 184, 150, 0.2);
+  color: #e8c8a0;
+}
+
+.chip-completed {
+  background: rgba(98, 185, 131, 0.2);
+  color: #a8e6c3;
+}
+
+/* Pattern 5: Loading Animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.loading-item {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideInRight var(--transition-base);
+}
+
+/* Pattern 6: Glass-Morphism Effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+}
+
+/* Pattern 7: Gradient Text */
+.gradient-text {
+  background: linear-gradient(90deg, var(--color-accent-gold) 0%, var(--color-accent-gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Pattern 8: Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(195, 156, 107, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(195, 156, 107, 0.6);
+}
+
+/* ==================== JAVASCRIPT HELPER SNIPPETS ==================== */
+
+// Copy these into app.js as needed
+
+// Helper 1: Format currency
+function formatCurrency(amount) {
+  return new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: 'GBP'
+  }).format(amount);
+}
+// Usage: formatCurrency(25.50) → "£25.50"
+
+// Helper 2: Format date
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-GB', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+// Usage: formatDate('2025-11-17') → "17 November 2025"
+
+// Helper 3: Calculate days until due
+function daysUntilDue(dueDate) {
+  const due = new Date(dueDate);
+  const today = new Date();
+  const diff = Math.floor((due - today) / (1000 * 60 * 60 * 24));
+  return diff;
+}
+// Usage: daysUntilDue('2025-11-24') → days remaining
+
+// Helper 4: Debounce function for search
+function debounce(func, delay) {
+  let timeoutId;
+  return function(...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
+  };
+}
+// Usage: const debouncedSearch = debounce(search, 300);
+
+// Helper 5: Sort array by property
+function sortBy(array, property, direction = 'asc') {
+  return [...array].sort((a, b) => {
+    if (a[property] < b[property]) return direction === 'asc' ? -1 : 1;
+    if (a[property] > b[property]) return direction === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+// Usage: sortBy(books, 'title', 'asc')
+
+// Helper 6: Filter by multiple criteria
+function filterBy(array, criteria) {
+  return array.filter(item => {
+    return Object.keys(criteria).every(key => item[key] === criteria[key]);
+  });
+}
+// Usage: filterBy(members, { status: 'active' })
+
+// Helper 7: Calculate statistics
+function calculateStats(transactions) {
+  return {
+    total: transactions.length,
+    returned: transactions.filter(t => t.status === 'returned').length,
+    active: transactions.filter(t => t.status === 'active').length,
+    overdue: transactions.filter(t => t.status === 'overdue').length
+  };
+}
+
+// Helper 8: Generate unique ID
+function generateId() {
+  return Date.now() + Math.random().toString(36).substr(2, 9);
+}
+
+// Helper 9: Clone object
+function clone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+// Helper 10: Local Storage helpers
+const Storage = {
+  set(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  },
+  get(key) {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+  },
+  remove(key) {
+    localStorage.removeItem(key);
+  },
+  clear() {
+    localStorage.clear();
+  }
+};
+// Usage: Storage.set('books', AppState.books)
+// Usage: const books = Storage.get('books')
+
+// ==================== HTML SNIPPETS ==================== */
+
+/* Snippet 1: Add a new button to settings */
+/*
+<div class="form-group">
+  <button class="btn btn-primary">
+    <i class="fas fa-refresh"></i>
+    Refresh Data
+  </button>
+</div>
+*/
+
+/* Snippet 2: Add a new stat card */
+/*
+<div class="stat-card">
+  <div class="stat-icon" style="background: rgba(91, 168, 240, 0.15); color: var(--color-semantic-info);">
+    <i class="fas fa-chart-pie"></i>
+  </div>
+  <div class="stat-content">
+    <p class="stat-label">Your Label</p>
+    <h3>999</h3>
+  </div>
+</div>
+*/
+
+/* Snippet 3: Add a new transaction status chip */
+/*
+<span class="chip" style="background: rgba(216, 184, 150, 0.2); color: #e8c8a0;">
+  In Progress
+</span>
+*/
+
+/* Snippet 4: Create a form field */
+/*
+<div class="form-group">
+  <label for="custom-field">Field Label</label>
+  <input type="text" id="custom-field" placeholder="Enter value" class="input">
+</div>
+*/
+
+/* Snippet 5: Add a modal button */
+/*
+<button class="btn btn-secondary" onclick="UIManager.openAddBookModal()">
+  <i class="fas fa-plus"></i>
+  Open Modal
+</button>
+*/
+
+/* ==================== API INTEGRATION TEMPLATES ==================== */
+
+// Template 1: Fetch books from API
+async function fetchBooks() {
+  try {
+    const response = await fetch('/api/books');
+    if (!response.ok) throw new Error('Failed to fetch books');
+    AppState.books = await response.json();
+    BookManager.render();
+  } catch (error) {
+    console.error('Error:', error);
+    UIManager.showToast('Failed to load books');
+  }
+}
+
+// Template 2: POST new book
+async function addBookAPI(book) {
+  try {
+    const response = await fetch('/api/books', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(book)
+    });
+    if (!response.ok) throw new Error('Failed to add book');
+    const newBook = await response.json();
+    AppState.books.push(newBook);
+    UIManager.showToast('Book added successfully');
+    BookManager.render();
+  } catch (error) {
+    console.error('Error:', error);
+    UIManager.showToast('Failed to add book');
+  }
+}
+
+// Template 3: PUT update member
+async function updateMemberAPI(memberId, updates) {
+  try {
+    const response = await fetch(`/api/members/${memberId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates)
+    });
+    if (!response.ok) throw new Error('Failed to update member');
+    const updated = await response.json();
+    const idx = AppState.members.findIndex(m => m.id === memberId);
+    if (idx !== -1) AppState.members[idx] = updated;
+    UIManager.showToast('Member updated');
+  } catch (error) {
+    console.error('Error:', error);
+    UIManager.showToast('Failed to update member');
+  }
+}
+
+// Template 4: DELETE transaction
+async function deleteTransactionAPI(transactionId) {
+  try {
+    const response = await fetch(`/api/transactions/${transactionId}`, {
+      method: 'DELETE'
+    });
+    if (!response.ok) throw new Error('Failed to delete');
+    AppState.transactions = AppState.transactions
+      .filter(t => t.id !== transactionId);
+    UIManager.showToast('Transaction deleted');
+    TransactionManager.render();
+  } catch (error) {
+    console.error('Error:', error);
+    UIManager.showToast('Failed to delete transaction');
+  }
+}
+
+// Template 5: Fetch with authentication
+async function fetchAuthorized(url, options = {}) {
+  const token = Storage.get('authToken');
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return fetch(url, { ...options, headers });
+}
+
+/* ==================== TESTING SNIPPETS ==================== */
+
+// Quick test: Log all data
+console.log('Books:', AppState.books);
+console.log('Members:', AppState.members);
+console.log('Transactions:', AppState.transactions);
+
+// Test search
+AppState.searchQuery = 'gatsby';
+BookManager.render();
+
+// Test page switch
+PageManager.switchPage('members');
+
+// Test toast
+UIManager.showToast('Test message');
+
+// Test add book
+AppState.books.push({
+  id: 999,
+  title: 'Test Book',
+  author: 'Test Author',
+  rating: 5,
+  copies: 1,
+  available: 1,
+  borrows: 0,
+  description: 'Test',
+  cover: 'linear-gradient(135deg, #c39c6b 0%, #e8a76d 100%)'
+});
+BookManager.render();
+
+// Test theme
+document.body.classList.toggle('light-theme');
+
+// Performance check
+console.time('render');
+DashboardManager.render();
+console.timeEnd('render');
+
+---
+
+**Pro Tips:**
+1. Use CSS custom properties for consistent theming
+2. Debounce search/filter operations for performance
+3. Cache DOM queries outside loops
+4. Use localStorage to persist user preferences
+5. Add loading indicators for async operations
+6. Always validate form input before processing
+7. Use try-catch for API calls
+8. Test responsiveness at breakpoints: 375px, 768px, 1024px, 1440px
